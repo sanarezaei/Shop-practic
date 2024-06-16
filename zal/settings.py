@@ -37,7 +37,7 @@ INTERNAL_IPS = [
 
 INSTALLED_APPS = [
     'grappelli',
-    
+    'filebrowser',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

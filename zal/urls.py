@@ -1,4 +1,5 @@
-"""
+"""ite
+
 URL configuration for zal project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -15,12 +16,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from filebrowser.sites import site as filebrowser_site
 from django.urls import path
 from django.conf.urls import include
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
+    path('admin/filebrowser/', filebrowser_site.urls),
     path('tinymce/', include('tinymce.urls')),
     path('grappelli/', include('grappelli.urls')), 
     path('admin/', admin.site.urls),
     path("__debug__/", include("debug_toolbar.urls")),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
