@@ -28,4 +28,39 @@ class Product(models.Model):
         db_table = "products"
         
     
+class ProductImage(models.Model):
+    product = models.ForeignKey("product.Product", verbose_name="product", on_delete=models.CASCADE)
+    image = models.ImageField("Image")
+    
+class ProductAttribute(models.Model):
+    product = models.ForeignKey("product.Product", verbose_name="product", on_delete=models.CASCADE)
+    title = models.CharField("Attribute title", max_length=100)
+    value = models.TextField("Attribute value")
+ 
+class Variant(models.Model):
+    product = models.ForeignKey("product.Product", verbose_name="product", on_delete=models.CASCADE)
+    title = models.CharField("Variant title", max_length=254)
+    price = models.DecimalField("Variant Price", max_digits=10, decimal_places=2)
+    sku = models.CharField("Variant SKU", max_length= 50)
+    quantity = models.IntegerField("Variant quantity", default=10)
+    
+    def __str__(self):
+        return self.title
+    
+    
+    
+class ProductOption(models.Model):
+    title = models.CharField("Option title", max_length=254)
+    
+    def __str__(self):
+        return self.title
+    
+    
+class VariantOption(models.Model):
+    variant = models.ForeignKey("product.Variant", verbose_name="variant", on_delete=models.CASCADE, null=True)
+    option = models.ForeignKey("product.ProductOption", verbose_name="option", on_delete=models.PROTECT)
+    value = models.CharField("Variant Option Value", max_length=254)
+    
+    def __str__(self):
+        return f"{self.variant} - {self.option} - {self.value}"
     
