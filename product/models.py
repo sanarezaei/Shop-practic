@@ -36,11 +36,17 @@ class ProductAttribute(models.Model):
     product = models.ForeignKey("product.Product", verbose_name="product", on_delete=models.CASCADE)
     title = models.CharField("Attribute title", max_length=100)
     value = models.TextField("Attribute value")
- 
-class Variant(models.Model):
+
+class BaseVariant(models.Model):
     product = models.ForeignKey("product.Product", verbose_name="product", on_delete=models.CASCADE)
     title = models.CharField("Variant title", max_length=254)
     price = models.DecimalField("Variant Price", max_digits=10, decimal_places=2)
+    
+    class Meta:
+        abstract = True
+    
+ 
+class Variant(BaseVariant):
     sku = models.CharField("Variant SKU", max_length= 50)
     quantity = models.IntegerField("Variant quantity", default=10)
     
