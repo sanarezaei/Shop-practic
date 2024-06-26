@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,16 +24,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-#6p72!p(3iazdjpkh1m9*mou_&zpbq%e1u$%a74j(=d6e@ezf)'
+SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-#6p72!p(3iazdjpkh1m9*mou_&zpbq%e1u$%a74j(=d6e@ezf)")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = int(os.environ.get("DEBUG", "1"))
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "127.0.0.1").split(",")
 
-INTERNAL_IPS = [
-    "127.0.0.1",
-]
+INTERNAL_IPS = os.environ.get("INTERNAL_IPS", )
 
 
 # Application definition
@@ -51,6 +52,7 @@ INSTALLED_APPS = [
     'user',
     'product',
     'order',
+    'payment'
 ]
 
 MIDDLEWARE = [
@@ -91,17 +93,17 @@ WSGI_APPLICATION = 'zal.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': os.environ.get('DEFAULT_DATABASE_ENGIN', 'django.db.backends.sqlite3'),
         'HOST': os.environ.get("DEFAULT_DATABASE_HOST", ""),
         'PORT': os.environ.get("DEFAULT_DATABASE_PORT", ""),
         'PASSWORD': os.environ.get("DEFAULT_DATABASE_PASSWORD", ""),
         'USER': os.environ.get("DEFAULT_DATABASE_USER", ""),
-        'NAME': os.environ.get('DEFAULT_DATABASE_NAME' ,BASE_DIR / 'db.sqlite3'),
+        # 'NAME': os.environ.get('DEFAULT_DATABASE_NAME' ,BASE_DIR / 'db.sqlite3'),
+        'NAME': os.environ.get("DEFAULT_DATABASE_NAME", os.path.join(BASE_DIR, "sqlite3"))
     }
 }
 
-print(DATABASES)
+# print("DATABASES= ", DATABASES , 50 * "-")
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

@@ -1,5 +1,6 @@
 from django.contrib import admin
 from order.models import ShoppingCard, ShoppingCardLine, Order, OrderLine, Shopping
+from payment.models import Payment
 
 class ShoppingCardLineInline(admin.TabularInline):
     model = ShoppingCardLine 
@@ -12,9 +13,12 @@ class OrderLineInline(admin.TabularInline):
     
 class ShoppingInline(admin.StackedInline):
     model = Shopping
+ 
+class PaymentInline(admin.TabularInline):
+    model = Payment
     
 class OrderAdmin(admin.ModelAdmin):
-    inlines = [OrderLineInline, ShoppingInline]
+    inlines = [OrderLineInline, ShoppingInline, PaymentInline]
     
 admin.site.register(ShoppingCard, ShoppingCardAdmin)
 admin.site.register(Order, OrderAdmin)

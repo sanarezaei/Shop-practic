@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
-# from utils.models.base import TimeStampedModel
+from utils.models.base import TimeStampModel
 
 class UserManager(BaseUserManager):
     def create_user(self, phone_no, password=None, **kwargs):
@@ -17,7 +17,7 @@ class UserManager(BaseUserManager):
     def create_superuser(self, phone_no, password=None):
         return self.create_user(phone_no, password=password, is_staff=True, is_superuser=True)
     
-class User(AbstractUser):
+class User(AbstractUser, TimeStampModel):
     username = None
     first_name = None
     last_name = None
@@ -33,7 +33,7 @@ class User(AbstractUser):
     class Meta:
         db_table = 'users'
         
-class Profile(models.Model):
+class Profile(TimeStampModel):
     user = models.OneToOneField('user.User', verbose_name="User", on_delete=models.CASCADE, related_name="profile")
     name = models.CharField("Full Name", max_length=100)
     email = models.EmailField("User Email", max_length=254)
@@ -61,7 +61,7 @@ class BaseAddress(models.Model):
     class Meta:
         abstract = True
         
-class Address(BaseAddress):
+class Address(BaseAddress, TimeStampModel):
     user = models.ForeignKey("user.User", verbose_name="User", on_delete=models.CASCADE, related_name="addresses", )  
     is_primary = models.BooleanField("Is this the Primary address?", default=False)
            
